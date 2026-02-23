@@ -1,0 +1,22 @@
+{
+    "name": "use-kadee/laravel-kadee",
+    "description": "Laravel error tracking package that sends exceptions to Kadee",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "UseKadee\\LaravelKadee\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "UseKadee\\LaravelKadee\\KadeeServiceProvider"
+            ]
+        }
+    }
+}
