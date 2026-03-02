@@ -63,12 +63,12 @@ class KadeeServiceProvider extends ServiceProvider
             );
         });
 
-        // Register the exception reporter using the contract interface,
-        // which is how Laravel binds the exception handler in bootstrap/app.php
-        $this->app->afterResolving(ExceptionHandler::class, function ($handler) {
-            $handler->reportable(function (Throwable $e) {
-                $this->app->make(KadeeExceptionReporter::class)->report($e);
-            });
+        // Resolve the exception handler directly and register the reportable callback.
+        // We can't use afterResolving() because the handler is already resolved
+        // before service providers boot.
+        $handler = $this->app->make(ExceptionHandler::class);
+        $handler->reportable(function (Throwable $e) {
+            $this->app->make(KadeeExceptionReporter::class)->report($e);
         });
     }
 
