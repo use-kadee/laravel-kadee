@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace UseKadee\LaravelKadee;
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
@@ -62,8 +63,9 @@ class KadeeServiceProvider extends ServiceProvider
             );
         });
 
-        // Register the exception reporter
-        $this->app->afterResolving('exception', function ($handler) {
+        // Register the exception reporter using the contract interface,
+        // which is how Laravel binds the exception handler in bootstrap/app.php
+        $this->app->afterResolving(ExceptionHandler::class, function ($handler) {
             $handler->reportable(function (Throwable $e) {
                 $this->app->make(KadeeExceptionReporter::class)->report($e);
             });
